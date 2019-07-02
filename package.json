@@ -1,0 +1,25 @@
+{
+  "name": "fm-login-api-challenge",
+  "version": "1.0.0",
+  "description": "Login/API challage with latitude and logitude ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm start --prefix client",
+    "client-install": "npm install --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "Fabunde N. Mamey",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.2"
+  }
+}
