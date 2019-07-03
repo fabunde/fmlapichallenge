@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
-class LongAndLatForm extends Component {
+
+import PropTypes from "prop-types";
+
+class LatAndLongForm extends Component {
   constructor() {
     super();
 
@@ -38,8 +41,8 @@ class LongAndLatForm extends Component {
     return (
       <>
         <h1 style={{ paddingBottom: 30 }}>Success</h1>
-        <h3>Enter a Latitude and Logitude</h3>
-        <Form>
+        <h3>Enter a Latitude and Longitude</h3>
+        <Form data-test="ltlg-form">
           <Row>
             <Col>
               <Form.Group>
@@ -49,6 +52,7 @@ class LongAndLatForm extends Component {
                   name="lat"
                   value={lat}
                   placeholder="Enter Latitude"
+                  data-test="input"
                 />
               </Form.Group>
             </Col>
@@ -61,11 +65,17 @@ class LongAndLatForm extends Component {
                   value={long}
                   placeholder="Enter Longitude"
                   onChange={this.handleChange}
+                  data-test="input"
                 />
               </Form.Group>
             </Col>
           </Row>
-          <Button variant="primary" type="submit" onClick={this.handleSumbit}>
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={this.handleSumbit}
+            data-test="button"
+          >
             Get Info
           </Button>
         </Form>
@@ -74,4 +84,7 @@ class LongAndLatForm extends Component {
   }
 }
 
-export default LongAndLatForm;
+LatAndLongForm.propTypes = {
+  onLatLongSubmit: PropTypes.func
+};
+export default LatAndLongForm;

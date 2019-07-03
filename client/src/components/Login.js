@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Button, Form } from "react-bootstrap";
 class Login extends Component {
   constructor() {
@@ -39,15 +40,17 @@ class Login extends Component {
     return (
       <>
         <h1 style={{ paddingBottom: 30 }}>Login</h1>
-        <Form>
+        <Form data-test="login-form">
           <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control
+              required
               onChange={this.handleChange}
               name="username"
               value={username}
               type="text"
               placeholder="Enter username"
+              data-test="input"
             />
           </Form.Group>
 
@@ -59,12 +62,14 @@ class Login extends Component {
               value={password}
               placeholder="Password"
               onChange={this.handleChange}
+              data-test="input"
             />
           </Form.Group>
           <Button
             variant="outline-primary"
             type="submit"
             onClick={this.handleSumbit}
+            data-test="button"
           >
             Submit
           </Button>
@@ -73,5 +78,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  onUserSubmit: PropTypes.func
+};
 
 export default Login;

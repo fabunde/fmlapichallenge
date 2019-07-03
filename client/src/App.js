@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import Login from "./components/Login";
-import LatAndLongForm from "./components/Ltlng/LongAndLatForm";
-import LatAndLongResult from "./components/Ltlng/LongAndLatResult";
+import LatAndLongForm from "./components/Ltlng/LatAndLongForm";
+import LatAndLongResult from "./components/Ltlng/LatAndLongResult";
+import Error from "./components/Error";
+import isEmpty from "./util/isEmpty";
 
 class App extends Component {
   constructor() {
@@ -34,7 +36,18 @@ class App extends Component {
   };
 
   handleLogin = userInfo => {
-    console.log(userInfo);
+    axios
+      .post("/api/users/login", userInfo)
+      .then(res => {
+        const { token } = res.data;
+        if (!isEmpty(token)) {
+          window.location.href = "/latlng";
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        window.location.href = "/error";
+      });
   };
 
   render() {
@@ -47,31 +60,28 @@ class App extends Component {
               <Route
                 exact
                 path="/login"
-                render={props => (
-                  <Login {...props} onUserSubmit={this.handleLogin} />
-                )}
+                render={() => <Login onUserSubmit={this.handleLogin} />}
               />
 
               <Route
                 exact
                 path="/"
-                render={props => (
-                  <Login {...props} onUserSubmit={this.handleLogin} />
-                )}
+                render={props => <Login onUserSubmit={this.handleLogin} />}
               />
+
+              <Route exact path="/error" component={Error} />
             </Col>
 
             <Col md={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 2 }}>
               <Route
                 exact
                 path="/latlng"
-                render={props => (
+                render={() => (
                   <React.Fragment>
                     <LatAndLongForm
-                      {...props}
                       onLatLongSubmit={this.handleLatLongSubmit}
                     />{" "}
-                    <LatAndLongResult {...props} city={city} state={state} />{" "}
+                    <LatAndLongResult city={city} state={state} />{" "}
                   </React.Fragment>
                 )}
               />
