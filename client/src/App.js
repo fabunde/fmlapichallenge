@@ -5,6 +5,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Login from "./components/Login";
 import LatAndLongForm from "./components/Ltlng/LatAndLongForm";
 import LatAndLongResult from "./components/Ltlng/LatAndLongResult";
+import Alert from "./components/Alert";
 import Error from "./components/Error";
 import isEmpty from "./util/isEmpty";
 
@@ -13,7 +14,9 @@ class App extends Component {
     super();
     this.state = {
       city: "",
-      state: ""
+      state: "",
+      showAlert: false,
+      alertMsg: ""
     };
   }
   handleLatLongSubmit = ltlgInfo => {
@@ -28,12 +31,22 @@ class App extends Component {
 
           this.setState({
             city,
-            state,
-            ltlgInfo
+            state
           });
         }
       })
       .catch(err => {
+        this.setState({
+          alertMsg: "Error finding location. Check Latitude & Longitude.",
+          showAlert: true
+        });
+
+        setTimeout(() => {
+          this.setState({
+            showAlert: false
+          });
+        }, 3000);
+
         console.log(err);
       });
   };
@@ -54,7 +67,7 @@ class App extends Component {
   };
 
   render() {
-    const { city, state } = this.state;
+    const { city, state, showAlert, alertMsg } = this.state;
     return (
       <Router>
         <Container className="App">
@@ -86,6 +99,8 @@ class App extends Component {
               />
             </Col>
           </Row>
+
+          <Alert showAlert={showAlert} alertMsg={alertMsg} />
         </Container>
       </Router>
     );

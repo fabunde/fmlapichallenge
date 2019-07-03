@@ -12,7 +12,7 @@ function LatAndLongResult(props) {
   return (
     <div className="ltlgresult">
       <hr />
-      <h2>Result</h2>
+      <h2 className="subheading">Result</h2>
       <p>{city === "" ? null : result}</p>
     </div>
   );
