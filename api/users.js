@@ -1,64 +1,92 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-// const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
 const User = require("../model/User");
 const isEmpty = require("../util/isEmpty");
+const dev = require("../config/dev");
 
-const errors = {};
+const bodyParser = require("body-parser");
+// create application/json parser
+const jsonParser = bodyParser.json();
+
+const error = {};
+
 // @route   GET api/users
 // @desc    get lists of users
-// @access  Private
+// @access  Public
 router.get("/", (req, res) => {
   res.json({ users: [] });
 });
 
-router.post("/register", (req, res) => {
-  User.findOne({ username: req.body.username }).then(user => {
+// @route   POST api/users/register
+// @desc    register a user
+// @access  Public
+router.post("/register", jsonParser, (req, res) => {
+  if (isEmpty(req.body)) {
+    error.msg = "username and password is required";
+    error.type = "user";
+    return res.status(400).json({ error });
+  }
+
+  const { username, password } = req.body;
+
+  User.findOne({ username }).then(user => {
     //check if user exist
     if (user) {
-      errors.username = "username already exists";
-      return res.status(400).json(errors);
+      error.type = "user";
+      error.msg = "username already exists";
+      return res.status(400).json({ error });
     } else {
+      // create new user
       const newUser = new User({
-        username: req.body.username,
-        password: req.body.password
+        username,
+        password
       });
 
       //encrypt password
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
+          if (err) {
+            error.msg = "Password hashing failed";
+            error.type = "password";
+            return res.status(400).json({ error });
+          }
           newUser.password = hash;
           newUser
             .save()
             .then(user => {
-              res.json(user);
+              res.json(user.username);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+              error.msg = "Error saving user";
+              error.type = "user";
+              console.log(err);
+              return res.status(400).json({ error });
+            });
         });
       });
     }
   });
 });
 
-router.post("/login", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+router.post("/login", jsonParser, (req, res) => {
+  const { username, password } = req.body;
 
   if (isEmpty(username) || isEmpty(password)) {
-    error.loginError = "Username or password is required.";
-    return res.status(400).json(errors);
+    error.type = "login";
+    error.msg = "Username or password is required.";
+    return res.status(400).json(error);
   } else {
     // Find user by username
     User.findOne({ username })
       .then(user => {
         // Check for user
         if (!user) {
-          errors.username = "User not found";
-          return res.status(404).json(errors);
+          error.type = "login";
+          error.msg = "User not found";
+          return res.status(404).json({ error });
         }
 
         // Check Password
@@ -66,15 +94,20 @@ router.post("/login", (req, res) => {
           if (isMatch) {
             // User Matched
             const payload = {
-              username: user.fname
+              username
             }; // Create JWT Payload
 
             // Sign Token
             jwt.sign(
               payload,
-              keys.secretOrKey,
+              dev.secretOrKey,
               { expiresIn: 604800 },
               (err, token) => {
+                if (err) {
+                  error.type = "login";
+                  error.msg = "Error in logging user";
+                  return res.status(400).json({ error });
+                }
                 res.json({
                   success: true,
                   token: "Bearer " + token
@@ -82,8 +115,9 @@ router.post("/login", (req, res) => {
               }
             );
           } else {
-            errors.password = "Password incorrect";
-            return res.status(400).json(errors);
+            error.msg = "Password incorrect";
+            error.type = "login";
+            return res.status(400).json({ error });
           }
         });
       })

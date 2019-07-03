@@ -37,7 +37,7 @@ class Login extends Component {
     let { username, password } = this.state;
     return (
       <>
-        <h1 style={{ paddingBottom: 30 }}>Login</h1>
+        <h1 className="heading">Login</h1>
         <Form>
           <Form.Group>
             <Form.Label>Username</Form.Label>

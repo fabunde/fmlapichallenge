@@ -1,17 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const bodyParser = require("body-parser");
 
-const users = require("./api/users");
+const user = require("./api/users");
 
 const app = express();
 
-app.use("/api/users", users);
-
-// Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// routes
+app.use("/api/users", user);
 
 let db = {};
 if (process.env.NODE_ENV === "production") {
@@ -19,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
   db = require("./config/production").mongoURI;
 } else {
   // DB Config
-  db = require("./config/keys").mongoURI;
+  db = require("./config/dev").mongoURI;
 }
 
 // Connect to MongoDB

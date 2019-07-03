@@ -20,16 +20,17 @@ class App extends Component {
     axios
       .get(`https://api.weather.gov/points/${ltlgInfo.lat},-${ltlgInfo.long}`)
       .then(result => {
-        //change result
-        const {
-          city,
-          state
-        } = result.data.properties.relativeLocation.properties;
+        if (result.data) {
+          const {
+            city,
+            state
+          } = result.data.properties.relativeLocation.properties;
 
-        this.setState({
-          city,
-          state
-        });
+          this.setState({
+            city,
+            state
+          });
+        }
       })
       .catch(err => {
         console.log(err);
@@ -57,13 +58,11 @@ class App extends Component {
       <Router>
         <Container className="App">
           <Row>
-            <Col md={{ span: 8, offset: 2 }} lg={{ span: 6, offset: 3 }}>
-              <Route
-                exact
-                path="/login"
-                render={() => <Login onUserSubmit={this.handleLogin} />}
-              />
-
+            <Col
+              className="contentHolder"
+              md={{ span: 8, offset: 2 }}
+              lg={{ span: 6, offset: 3 }}
+            >
               <Route
                 exact
                 path="/"
@@ -71,19 +70,17 @@ class App extends Component {
               />
 
               <Route exact path="/error" component={Error} />
-            </Col>
 
-            <Col md={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 2 }}>
               <Route
                 exact
                 path="/latlng"
                 render={() => (
-                  <React.Fragment>
+                  <>
                     <LatAndLongForm
                       onLatLongSubmit={this.handleLatLongSubmit}
                     />{" "}
                     <LatAndLongResult city={city} state={state} />{" "}
-                  </React.Fragment>
+                  </>
                 )}
               />
             </Col>

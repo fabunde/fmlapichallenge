@@ -40,8 +40,7 @@ class LatAndLongForm extends Component {
     let { lat, long } = this.state;
     return (
       <>
-        <h1 style={{ paddingBottom: 30 }}>Success</h1>
-        <h3>Enter a Latitude and Longitude</h3>
+        <h1 className="heading successheading">Success</h1>
         <Form>
           <Row>
             <Col>
