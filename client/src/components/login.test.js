@@ -1,6 +1,6 @@
 import Login from "./Login";
 
-import { componentSetUp, findByTestAttr } from "../util/testFunctions";
+import { componentSetUp } from "../util/testFunctions";
 
 describe("Login Component", () => {
   let component;
@@ -9,18 +9,21 @@ describe("Login Component", () => {
     component = componentSetUp(Login);
   });
 
-  it("Render form with no errors", () => {
-    const form = findByTestAttr(component, "login-form");
+  it("Renders form", () => {
+    const form = component.find("Form");
     expect(form.length).toBe(1);
   });
 
-  it("Form should render 2 input fields", () => {
-    const inputs = findByTestAttr(component, "input");
-    expect(inputs.length).toBe(2);
+  it("Should render username & password fields", () => {
+    const username = component.find("[name='username']");
+    const password = component.find("[name='password']");
+
+    expect(username.length).toBe(1);
+    expect(password.length).toBe(1);
   });
 
-  it("Form should render a submit button", () => {
-    const button = findByTestAttr(component, "button");
+  it("Should render a submit button", () => {
+    const button = component.find("[type='submit']");
     expect(button.length).toBe(1);
   });
 });

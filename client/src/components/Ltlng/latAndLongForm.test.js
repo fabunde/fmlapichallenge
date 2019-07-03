@@ -1,5 +1,5 @@
 import LatAndLongForm from "./LatAndLongForm";
-import { componentSetUp, findByTestAttr } from "../../util/testFunctions";
+import { componentSetUp } from "../../util/testFunctions";
 
 describe("LatAndLongForm", () => {
   let component;
@@ -7,18 +7,21 @@ describe("LatAndLongForm", () => {
     component = componentSetUp(LatAndLongForm);
   });
 
-  it("Render form with no erros", () => {
-    const form = findByTestAttr(component, "ltlg-form");
+  it("Should render a form", () => {
+    const form = component.find("Form");
     expect(form.length).toBe(1);
   });
 
-  it("Form should render 2 input fields", () => {
-    const inputs = findByTestAttr(component, "input");
-    expect(inputs.length).toBe(2);
+  it("Should render lat & long input fields", () => {
+    const lat = component.find("[name='lat']");
+    const long = component.find("[name='long']");
+
+    expect(lat.length).toBe(1);
+    expect(long.length).toBe(1);
   });
 
-  it("Form should render a submit button", () => {
-    const button = findByTestAttr(component, "button");
+  it("Should render a submit button", () => {
+    const button = component.find("[type='submit']");
     expect(button.length).toBe(1);
   });
 });

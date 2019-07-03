@@ -1,5 +1,5 @@
 import LatAndLongResult from "./LatAndLongResult";
-import { componentSetUp, findByTestAttr } from "../../util/testFunctions";
+import { componentSetUp } from "../../util/testFunctions";
 
 describe("Latitude And Longitude Component", () => {
   let component;
@@ -13,8 +13,13 @@ describe("Latitude And Longitude Component", () => {
       component = componentSetUp(LatAndLongResult, props);
     });
 
+    it("Should render LatAndLong component", () => {
+      const div = component.find(".ltlgresult");
+      expect(div.length).toBe(1);
+    });
+
     it("Should render <p> tag with city & state", () => {
-      const p = findByTestAttr(component, "city-state");
+      const p = component.find("p");
       expect(p.length).toBe(1);
     });
   });
@@ -25,8 +30,8 @@ describe("Latitude And Longitude Component", () => {
     });
 
     it("Should Render Nothing", () => {
-      const p = findByTestAttr(component, "city-state");
-      expect(p.length).toBe(0);
+      const div = component.find(".ltlgresult");
+      expect(div.length).toBe(0);
     });
   });
 });

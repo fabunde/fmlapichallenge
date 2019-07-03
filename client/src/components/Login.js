@@ -4,7 +4,6 @@ import { Button, Form } from "react-bootstrap";
 class Login extends Component {
   constructor() {
     super();
-
     this.state = {
       username: "",
       password: ""
@@ -18,9 +17,10 @@ class Login extends Component {
   };
 
   handleSumbit = e => {
+    e.preventDefault();
+
     let { username, password } = this.state;
 
-    // let userInfo = {};
     if (username !== "" || password !== "") {
       let userInfo = {
         username,
@@ -29,10 +29,8 @@ class Login extends Component {
 
       this.props.onUserSubmit(userInfo);
     } else {
-      console.log("empty fields");
+      console.warn("empty fields");
     }
-
-    e.preventDefault();
   };
 
   render() {
@@ -40,7 +38,7 @@ class Login extends Component {
     return (
       <>
         <h1 style={{ paddingBottom: 30 }}>Login</h1>
-        <Form data-test="login-form">
+        <Form>
           <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -50,7 +48,6 @@ class Login extends Component {
               value={username}
               type="text"
               placeholder="Enter username"
-              data-test="input"
             />
           </Form.Group>
 
@@ -62,14 +59,12 @@ class Login extends Component {
               value={password}
               placeholder="Password"
               onChange={this.handleChange}
-              data-test="input"
             />
           </Form.Group>
           <Button
             variant="outline-primary"
             type="submit"
             onClick={this.handleSumbit}
-            data-test="button"
           >
             Submit
           </Button>

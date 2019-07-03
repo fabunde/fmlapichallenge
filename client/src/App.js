@@ -20,6 +20,7 @@ class App extends Component {
     axios
       .get(`https://api.weather.gov/points/${ltlgInfo.lat},-${ltlgInfo.long}`)
       .then(result => {
+        //change result
         const {
           city,
           state

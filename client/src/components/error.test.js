@@ -1,6 +1,6 @@
 import Error from "./Error";
 
-import { componentSetUp, findByTestAttr } from "../util/testFunctions";
+import { componentSetUp } from "../util/testFunctions";
 
 describe("Error Component", () => {
   let component;
@@ -8,8 +8,8 @@ describe("Error Component", () => {
   beforeEach(() => {
     component = componentSetUp(Error);
   });
-  it("Should render a heading", () => {
-    const heading = findByTestAttr(component, "errHeading");
+  it("Should render a h2 heading", () => {
+    const heading = component.find("h2");
     expect(heading.length).toBe(1);
   });
 });

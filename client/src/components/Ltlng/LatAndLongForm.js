@@ -42,7 +42,7 @@ class LatAndLongForm extends Component {
       <>
         <h1 style={{ paddingBottom: 30 }}>Success</h1>
         <h3>Enter a Latitude and Longitude</h3>
-        <Form data-test="ltlg-form">
+        <Form>
           <Row>
             <Col>
               <Form.Group>
@@ -52,7 +52,6 @@ class LatAndLongForm extends Component {
                   name="lat"
                   value={lat}
                   placeholder="Enter Latitude"
-                  data-test="input"
                 />
               </Form.Group>
             </Col>
@@ -65,17 +64,11 @@ class LatAndLongForm extends Component {
                   value={long}
                   placeholder="Enter Longitude"
                   onChange={this.handleChange}
-                  data-test="input"
                 />
               </Form.Group>
             </Col>
           </Row>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={this.handleSumbit}
-            data-test="button"
-          >
+          <Button variant="primary" type="submit" onClick={this.handleSumbit}>
             Get Info
           </Button>
         </Form>
