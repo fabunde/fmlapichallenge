@@ -28,7 +28,8 @@ class App extends Component {
 
           this.setState({
             city,
-            state
+            state,
+            ltlgInfo
           });
         }
       })
@@ -79,7 +80,7 @@ class App extends Component {
                     <LatAndLongForm
                       onLatLongSubmit={this.handleLatLongSubmit}
                     />{" "}
-                    <LatAndLongResult city={city} state={state} />{" "}
+                    <LatAndLongResult city={city} state={state} />
                   </>
                 )}
               />
